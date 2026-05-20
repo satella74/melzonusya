@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PuzzlePal - Create Your Puzzle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#fd8c9c",
+                    "surface-container": "#eceef0",
+                    "on-surface": "#191c1e",
+                    "on-primary-fixed": "#001e2f",
+                    "outline": "#707880",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#8aceff",
+                    "surface-tint": "#006491",
+                    "inverse-primary": "#8aceff",
+                    "background": "#f7f9fb",
+                    "on-background": "#191c1e",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#e6e8ea",
+                    "secondary-fixed-dim": "#ffb2bb",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-dim": "#d8dadc",
+                    "on-primary-fixed-variant": "#004c6e",
+                    "tertiary": "#665e49",
+                    "on-tertiary-container": "#564e3a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e0e3e5",
+                    "on-surface-variant": "#40484f",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e0e3e5",
+                    "outline-variant": "#bfc7d0",
+                    "primary-fixed": "#c9e6ff",
+                    "secondary-fixed": "#ffd9dc",
+                    "primary-container": "#7bc9ff",
+                    "secondary": "#9c4050",
+                    "on-secondary-container": "#772334",
+                    "tertiary-container": "#ccc0a7",
+                    "surface": "#f7f9fb",
+                    "on-secondary-fixed": "#400011",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "tertiary-fixed-dim": "#d1c5ac",
+                    "surface-bright": "#f7f9fb",
+                    "on-secondary-fixed-variant": "#7e2839",
+                    "primary": "#006491",
+                    "on-tertiary-fixed": "#211b0b",
+                    "on-primary-container": "#00547a",
+                    "inverse-on-surface": "#eff1f3",
+                    "tertiary-fixed": "#eee1c7",
+                    "on-tertiary-fixed-variant": "#4e4633",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "sm": "12px",
+                    "base": "8px",
+                    "gutter": "20px",
+                    "margin-desktop": "48px",
+                    "xs": "4px",
+                    "lg": "40px",
+                    "margin-mobile": "16px",
+                    "xl": "64px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Quicksand"],
+                    "headline-lg": ["Quicksand"],
+                    "body-md": ["Quicksand"],
+                    "headline-lg-mobile": ["Quicksand"],
+                    "headline-md": ["Quicksand"],
+                    "label-bold": ["Quicksand"]
+            },
+            "fontSize": {
+                    "body-lg": ["20px", {"lineHeight": "30px", "fontWeight": "500"}],
+                    "headline-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-bold": ["16px", {"lineHeight": "20px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Quicksand', sans-serif; background-color: #f7f9fb; }
+        .cloud-shadow { box-shadow: 0 10px 40px -10px rgba(0, 100, 145, 0.08); }
+        .chunky-button { 
+            position: relative;
+            transition: all 0.1s ease;
+            top: 0;
+        }
+        .chunky-button:active {
+            top: 4px;
+            box-shadow: none !important;
+        }
+        .chunky-primary {
+            box-shadow: 0 4px 0 #004c6e;
+        }
+        .chunky-secondary {
+            box-shadow: 0 4px 0 #7e2839;
+        }
+        .chunky-tertiary {
+            box-shadow: 0 4px 0 #4e4633;
+        }
+        .dashed-border {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='48' ry='48' stroke='%23006491' stroke-width='4' stroke-dasharray='12%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 32px;
+            width: 32px;
+            border-radius: 50%;
+            background: #006491;
+            cursor: pointer;
+            border: 4px solid #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface shadow-[0_8px_30px_rgb(0,100,145,0.05)] flex justify-between items-center px-margin-mobile py-base w-full z-50 fixed top-0 left-0">
+<div class="font-headline-md text-headline-md-mobile font-bold text-primary">PuzzlePal</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-outline hover:scale-105 transition-transform duration-200 active:translate-y-[2px]" data-icon="help">help</button>
+<button class="material-symbols-outlined text-outline hover:scale-105 transition-transform duration-200 active:translate-y-[2px]" data-icon="settings">settings</button>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container">
+<img alt="Scout" class="w-full h-full object-cover" data-alt="A friendly, rounded digital avatar of a happy puppy dog named Scout, designed with soft pastel colors and bold outlines in a modern playful minimalist style. The lighting is warm and bright, conveying a sense of safety and fun for young children, set against a clean, light-mode sky blue background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdTq96Vhw4-ZXtCL2v7TjYFoQjTbfYEnRVS18bDYOzS5BayxgFGze33M769rikUEPSmk0P0ZcJRf5h4csE9H_7lr7JBTB1PnM0PNktAvJJSfFeILWA2kqyjGkI4lS9uHPZux53wanG6nXguiGzZIo9PkVmIVoKO5BLKGBY2e3eTU07uFlMO7qlz89Sikb6WndJt7k-bHOxHsM0KVohwRrZ0v8hk-BfEA5bBRZ8TWGgvjYNq7hVJ2G8Bid-Erpj1MR4NvKYmlUYj6c"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto flex flex-col gap-lg">
+<!-- Welcome Section -->
+<section class="text-center space-y-xs">
+<h1 class="font-headline-lg text-headline-lg-mobile text-primary">Hey Scout! Let's make a puzzle!</h1>
+<p class="font-body-md text-on-surface-variant">Pick your favorite photo and choose how many pieces.</p>
+</section>
+<!-- Drag and Drop Area -->
+<section class="relative group">
+<div class="aspect-[4/3] md:aspect-[16/9] dashed-border bg-surface-container-lowest rounded-xl flex flex-col items-center justify-center cursor-pointer transition-colors hover:bg-primary-container/10" id="drop-zone">
+<div class="p-lg bg-primary-container/20 rounded-full mb-md group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary !text-6xl" data-icon="photo_camera">photo_camera</span>
+</div>
+<h2 class="font-headline-md text-primary">Click to add a photo</h2>
+<p class="font-body-md text-outline">or drag one right here!</p>
+<input accept="image/*" class="hidden" id="file-input" type="file"/>
+</div>
+</section>
+<!-- Selection Controls -->
+<section class="bg-surface-container-low rounded-lg p-lg cloud-shadow space-y-lg">
+<div class="flex flex-col gap-md">
+<div class="flex justify-between items-end">
+<label class="font-label-bold text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined" data-icon="extension">extension</span>
+                        How many pieces?
+                    </label>
+<div class="px-sm py-xs rounded-full bg-[#E8F5E9] text-[#2E7D32] font-label-bold transition-all duration-300" id="difficulty-badge">
+                        Easy Peasy!
+                    </div>
+</div>
+<!-- Slider -->
+<div class="px-sm py-md">
+<input class="w-full h-4 bg-primary-container rounded-full appearance-none cursor-pointer" id="piece-slider" max="4" min="0" step="1" type="range" value="0"/>
+<div class="flex justify-between mt-sm font-label-bold text-outline">
+<span>9</span>
+<span>16</span>
+<span>25</span>
+<span>36</span>
+<span>49</span>
+</div>
+</div>
+<!-- Quick Selection Buttons -->
+<div class="grid grid-cols-5 gap-sm">
+<button class="piece-btn active chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-primary" onclick="updateSelection(0)">9</button>
+<button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(1)">16</button>
+<button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(2)">25</button>
+<button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(3)">36</button>
+<button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(4)">49</button>
+</div>
+</div>
+<!-- Start Button -->
+<div class="pt-sm">
+<button class="w-full chunky-button chunky-primary bg-primary text-on-primary py-md rounded-xl font-headline-md flex items-center justify-center gap-sm">
+                    Let's Play!
+                    <span class="material-symbols-outlined" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</section>
+<!-- Decorative Element (Asymmetric) -->
+<div class="hidden md:block absolute -right-24 top-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-primary !text-[200px]" data-icon="extension">extension</span>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-xs py-sm bg-surface-container-lowest shadow-[0_-8px_30px_rgb(0,100,145,0.05)] rounded-t-xl z-50">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 scale-110 transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-bold text-label-bold">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="extension">extension</span>
+<span class="font-label-bold text-label-bold">My Puzzles</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-bold text-label-bold">Awards</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="family_restroom">family_restroom</span>
+<span class="font-label-bold text-label-bold">Grown-ups</span>
+</button>
+</nav>
+<script>
+        const slider = document.getElementById('piece-slider');
+        const badge = document.getElementById('difficulty-badge');
+        const buttons = document.querySelectorAll('.piece-btn');
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        const difficulties = [
+            { label: 'Easy Peasy!', bg: '#E8F5E9', text: '#2E7D32', pieces: 9 },
+            { label: 'Smarty Pants', bg: '#E3F2FD', text: '#1976D2', pieces: 16 },
+            { label: 'Puzzle Master', bg: '#FFF3E0', text: '#EF6C00', pieces: 25 },
+            { label: 'Big Genius', bg: '#F3E5F5', text: '#7B1FA2', pieces: 36 },
+            { label: 'Super Pro!', bg: '#FFEBEE', text: '#C62828', pieces: 49 }
+        ];
+
+        function updateUI(index) {
+            const diff = difficulties[index];
+            badge.innerText = diff.label;
+            badge.style.backgroundColor = diff.bg;
+            badge.style.color = diff.text;
+
+            buttons.forEach((btn, i) => {
+                if (i == index) {
+                    btn.classList.add('border-primary');
+                    btn.classList.remove('border-transparent');
+                } else {
+                    btn.classList.add('border-transparent');
+                    btn.classList.remove('border-primary');
+                }
+            });
+            slider.value = index;
+        }
+
+        slider.addEventListener('input', (e) => {
+            updateUI(e.target.value);
+        });
+
+        window.updateSelection = (index) => {
+            updateUI(index);
+        }
+
+        // Simple Drag and Drop handling
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('bg-primary-container/20');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('bg-primary-container/20');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-primary-container/20');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                dropZone.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover rounded-xl" alt="Preview">`;
+                dropZone.classList.remove('dashed-border');
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body></html>

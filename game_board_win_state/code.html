@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PuzzlePal - Active Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#fd8c9c",
+                        "surface-container": "#eceef0",
+                        "on-surface": "#191c1e",
+                        "on-primary-fixed": "#001e2f",
+                        "outline": "#707880",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#8aceff",
+                        "surface-tint": "#006491",
+                        "inverse-primary": "#8aceff",
+                        "background": "#f7f9fb",
+                        "on-background": "#191c1e",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed-dim": "#ffb2bb",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-dim": "#d8dadc",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "tertiary": "#665e49",
+                        "on-tertiary-container": "#564e3a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "on-surface-variant": "#40484f",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e0e3e5",
+                        "outline-variant": "#bfc7d0",
+                        "primary-fixed": "#c9e6ff",
+                        "secondary-fixed": "#ffd9dc",
+                        "primary-container": "#7bc9ff",
+                        "secondary": "#9c4050",
+                        "on-secondary-container": "#772334",
+                        "tertiary-container": "#ccc0a7",
+                        "surface": "#f7f9fb",
+                        "on-secondary-fixed": "#400011",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "tertiary-fixed-dim": "#d1c5ac",
+                        "surface-bright": "#f7f9fb",
+                        "on-secondary-fixed-variant": "#7e2839",
+                        "primary": "#006491",
+                        "on-tertiary-fixed": "#211b0b",
+                        "on-primary-container": "#00547a",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-fixed": "#eee1c7",
+                        "on-tertiary-fixed-variant": "#4e4633",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "gutter": "20px",
+                        "margin-desktop": "48px",
+                        "xs": "4px",
+                        "lg": "40px",
+                        "margin-mobile": "16px",
+                        "xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Quicksand"],
+                        "headline-lg": ["Quicksand"],
+                        "body-md": ["Quicksand"],
+                        "headline-lg-mobile": ["Quicksand"],
+                        "headline-md": ["Quicksand"],
+                        "label-bold": ["Quicksand"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["20px", {"lineHeight": "30px", "fontWeight": "500"}],
+                        "headline-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-bold": ["16px", {"lineHeight": "20px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+        .bubbly-button {
+            box-shadow: 0 6px 0 0 rgba(0,0,0,0.1);
+        }
+        .bubbly-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 0 rgba(0,0,0,0.1);
+        }
+        .puzzle-slot {
+            background-image: radial-gradient(circle, rgba(0, 100, 145, 0.05) 1px, transparent 1px);
+            background-size: 10px 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col overflow-x-hidden">
+<!-- Top Navigation Bar (Shared Component) -->
+<header class="bg-surface shadow-[0_8px_30px_rgb(0,100,145,0.05)] flex justify-between items-center px-margin-mobile py-base w-full z-40 sticky top-0">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md-mobile font-bold text-primary">PuzzlePal</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-outline hover:scale-105 transition-transform active:translate-y-[2px]">
+<span class="material-symbols-outlined text-[28px]">help</span>
+</button>
+<button class="text-outline hover:scale-105 transition-transform active:translate-y-[2px]">
+<span class="material-symbols-outlined text-[28px]">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-secondary-container overflow-hidden border-2 border-white shadow-sm">
+<img alt="Scout the explorer avatar" class="w-full h-full object-cover" data-alt="A friendly and adventurous golden retriever puppy character named Scout, wearing a tiny explorer hat and a blue bandana. The puppy has sparkling eyes and a cheerful smile, rendered in a 3D clay-like animation style with soft lighting and a warm, inviting color palette of honey yellows and sky blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpEh16MM0pA3TCAMgYY6MF69tcgti2s_ODVoNHV6Y8IZJvDJCszzlaOhffcO8-DyNI_2SkKje1e12MkIKxOCSplovGqgHPGsaVoFxcJGcOgW7BP11XGFLeEnF6fmHid_n_rr-SlV2kn1viT-czznqXElRl5NSTJlbgoD5Cka-FCghgg4PUcJTh7aAzqqpxWinx3htxKQeg4xOSUtjPVtCx80p9ZmM580ZBKi_ArgKekC9BlZnkfXwWJYQ7ry_YXeRtwFUrSkPVuQc"/>
+</div>
+</div>
+</header>
+<!-- Main Game Area -->
+<main class="flex-grow flex flex-col items-center px-margin-mobile pt-md pb-xl md:pb-margin-desktop gap-lg max-w-5xl mx-auto w-full">
+<!-- Game Stats & Progress -->
+<div class="w-full flex flex-col gap-sm animate-fade-in">
+<div class="flex justify-between items-end px-xs">
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold text-outline">MOVES</span>
+<span class="font-headline-lg text-headline-lg-mobile text-primary" id="move-count">14</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-bold text-label-bold text-outline">PROGRESS</span>
+<span class="font-headline-md text-primary">78%</span>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-6 bg-tertiary-container rounded-full overflow-hidden p-[3px]">
+<div class="h-full bg-secondary-container rounded-full w-[78%] transition-all duration-700 ease-out shadow-inner"></div>
+</div>
+</div>
+<!-- Puzzle Board Layout -->
+<div class="w-full flex flex-col md:flex-row gap-lg items-center">
+<!-- Central Grid (The Canvas) -->
+<div class="relative w-full aspect-square md:w-[60%] bg-surface-container rounded-xl shadow-[0_8px_30px_rgb(0,100,145,0.05)] p-md">
+<div class="puzzle-grid h-full w-full">
+<!-- Slots & Placed Pieces -->
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot">
+<img class="w-full h-full object-cover" data-alt="A close-up high-quality photo of a fluffy ginger kitten playing with a colorful ball of yarn on a soft, sunlit wooden floor. The image is bright and playful, fitting a children's puzzle game aesthetic with soft shadows and high-key lighting. The scene is full of joy and domestic warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRoG3NGK3WklmV9L7szyAbIxfncwFZG7rpKleCtw15mO2TXVJrxg6kSyZNJ_b2GMlbUy9zyj6gwOGbLsD3NRLj38QOh8bRrPNq3dLLmagAaBFbMKG0aZTLviGLeUGBpDDTsKZNedLjMNiq4a5b49gDTSKPBc9MlomxdJKnYB8MXOXtgbwbZXoTDboH76a8USCI1aLKJOl6L1fGxl4kH7_1NDtCqGdLT7AW2UogvH3eDvXp0Ry1hqZ0_O9k8a6iF-4cz-yyfvflG7I"/>
+</div>
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot">
+<img class="w-full h-full object-cover" data-alt="A close-up high-quality photo of a fluffy ginger kitten playing with a colorful ball of yarn on a soft, sunlit wooden floor. The image is bright and playful, fitting a children's puzzle game aesthetic with soft shadows and high-key lighting. The scene is full of joy and domestic warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW1UI75yCFFbiehTPwEOi_nSqjGp_8JJYs89k7LofYloiGG-sAApfK_Ds4H722hIHa0Yc2emA2qDinI3UMrLac10Lu0M4ytoBgdUpsK-S7_c4Qtd62jaiUf6gu45zXdqrGdMZJLoahoOxWpqWTwS7OTnXBeY3L9A0MtUhkyEkdsIFiMc2qgKapP_ZDatqDNOp3vl-n_t_8geQvUISSQwhfiCiVui8ZrrUMBAp7Sat-UcQDF1YZ2tkYeHo4itOOYoJKrzNUnQeIMXY" style="object-position: 50% 0%;"/>
+</div>
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary/20 text-4xl">extension</span>
+</div>
+<!-- Row 2 -->
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot">
+<img class="w-full h-full object-cover" data-alt="A close-up high-quality photo of a fluffy ginger kitten playing with a colorful ball of yarn on a soft, sunlit wooden floor. The image is bright and playful, fitting a children's puzzle game aesthetic with soft shadows and high-key lighting. The scene is full of joy and domestic warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBus4Dig0L6wzDcxizdagY6w5nPGg9sBbul5fiLs-pzixgjrJ885NA8U_Dnkeza8vZ7VuwneExrrIBVaX5EQY1QpNdY0y4suSeNA61Vaxxg7lhaOG4aCe8EoGEXc3xCB5QvqUWIYqL6TjdpsF6t9U2xkq1Vq12yH4CUJ4Y1-fZ-9orXAxgZoKLJIQVacxPF_TeIyvVuR-B1lsrGmPaWx-pUzLqcBgbOm0NNDfk1FkJeux1DqHaE3O7P6e1q2v7Mi2IYPksKASgPsQc" style="object-position: 0% 50%;"/>
+</div>
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot">
+<img class="w-full h-full object-cover" data-alt="A close-up high-quality photo of a fluffy ginger kitten playing with a colorful ball of yarn on a soft, sunlit wooden floor. The image is bright and playful, fitting a children's puzzle game aesthetic with soft shadows and high-key lighting. The scene is full of joy and domestic warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ_C5TMUlHO7c_RBKIEVi3j9z4iFx-53Uxce5ZUzbiQ7UYulXHZHo-Dq8C4JLF0lE2MJ_m7WYAFCEpJeQsyCFtFrECUNkuizHnnoLRYaVyhXZcU7sCH05U1S8UqoLlq72v_G9vPr4gpJ5UOx6E30IspdWM4QYvdqbvFtISLJT6giQvK-Hek-KTfVJ-L9nMsu2KgrRm4fOzONjitZuCidry2RrPxXro47Qcv1gkEuEFrqfrr6SPqg4GN6CQ5ab5QbdWbVNX_YOZpo0" style="object-position: 50% 50%;"/>
+</div>
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot">
+<img class="w-full h-full object-cover" data-alt="A close-up high-quality photo of a fluffy ginger kitten playing with a colorful ball of yarn on a soft, sunlit wooden floor. The image is bright and playful, fitting a children's puzzle game aesthetic with soft shadows and high-key lighting. The scene is full of joy and domestic warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9CojE-Uy4uVParoWOjhLh0D0UsaodxaksX--gufHsB1nedpYbBZmcl3Ue8pOKyEU7bJ6tfvXbrjkjzofD5Lf9eotxlOB0ZNyD9oM7e8oTNnhyF67K_q3TcATIKBwRNsnbFg-3Nx7Et8T4cQGQMGOpwu5pby8NRAbu0suyZldMnFC0auCqI_3Byf_lShqYlsMCp0_YaJjxC7OsPLo7IpU2-pK-Xg1PU1gdVNw7Bm7SS6BBigri47kz8nh24XJumX_A0r6mOVdTtLA" style="object-position: 100% 50%;"/>
+</div>
+<!-- Row 3 -->
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot">
+<img class="w-full h-full object-cover" data-alt="A close-up high-quality photo of a fluffy ginger kitten playing with a colorful ball of yarn on a soft, sunlit wooden floor. The image is bright and playful, fitting a children's puzzle game aesthetic with soft shadows and high-key lighting. The scene is full of joy and domestic warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw-TuZScjwrede6mgGCp6dymdtnsGrXZzA4snYCSIVrnjq5dxxWUwaS1oEHPIXIWewDV287oVvqK5Fy9Vevn7TyJqFWx9UD0cGMFJdocxgNlF0w9_Tyu3zn3BmYCUW05ZTJNnZa7JK3iFPgG-lq7bAS3lm8wJ_TdUwT9uMIIeOMMwdwdkmwgilwL6F_v9cLhgEUU5rHoudGRcAYQCDX6jxYp9aXu0rm5H7k1fHNt-n-MRfmxedk6Xop_fD7INFhaX2vOpKjP3K7_k" style="object-position: 0% 100%;"/>
+</div>
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary/20 text-4xl">extension</span>
+</div>
+<div class="relative rounded-lg overflow-hidden border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot">
+<img class="w-full h-full object-cover" data-alt="A close-up high-quality photo of a fluffy ginger kitten playing with a colorful ball of yarn on a soft, sunlit wooden floor. The image is bright and playful, fitting a children's puzzle game aesthetic with soft shadows and high-key lighting. The scene is full of joy and domestic warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQAo6KEVRmzmE_6hJdjwLsFuLexverqqWFxG8OCYTp_oBiVZNrAYGRBFjgOKII0x7EEioZuY_QCAzrrWPufi6Qxl7qkwzGEDC89Jq-rkBORENf4JH6Qf_m_qd8O_hKeFP976Kgc5PF035B9osU55GNIXVBy-puobNJpC1RdrGd4sGVOqa0lHEBSsY6SvSrYt1OqmvPtXhuuxS_tJDWr4Zf-ZIlSdZ9_5ulwsxpeLkMWqsI56KycqKznwhblU5HDUHjNHx8IXvyMrs" style="object-position: 100% 100%;"/>
+</div>
+</div>
+</div>
+<!-- Side Tray (Unplaced Pieces) -->
+<div class="w-full md:w-[35%] bg-surface-container-low rounded-xl p-md flex flex-col gap-md">
+<span class="font-label-bold text-label-bold text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                    YOUR PIECES
+                </span>
+<div class="grid grid-cols-2 gap-sm">
+<div class="aspect-square bg-white rounded-lg p-xs shadow-sm cursor-grab active:cursor-grabbing hover:scale-105 transition-transform" onclick="addMove()">
+<div class="w-full h-full rounded-md overflow-hidden bg-primary-container/20 border border-primary/10">
+<img class="w-full h-full object-cover" data-alt="A detailed section of a puzzle piece showing the ear of a ginger kitten. The piece is rendered with high clarity, emphasizing soft fur textures and a warm, inviting color palette of orange, cream, and sunlight. Part of a cheerful children's game interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh6dewKcQQULzPACnbsFuO5vrMv9yd4rCKerozRM5I4jwGRyDS15T5MW8JIO5SLkOGVejTuphnWo0pn16VINqblZF4IpqTVIZ9RhpgS7LOmSte3QwGEgwtNLC3KvlLQUNu5-GH2_Cz2prgGVP2952dWDiQnGjLQPBcafy2DRmoZ2zea8MFO0Myttk__G2LT7-FAvLYUScBPzfBrYSQzKiJC8uS-byyw7sNV3qy-tDzr6mbYu-TlGev118Ry6JP6jBO3nSLW-g29to" style="object-position: 100% 0%;"/>
+</div>
+</div>
+<div class="aspect-square bg-white rounded-lg p-xs shadow-sm cursor-grab active:cursor-grabbing hover:scale-105 transition-transform" onclick="showWinModal()">
+<div class="w-full h-full rounded-md overflow-hidden bg-primary-container/20 border border-primary/10">
+<img class="w-full h-full object-cover" data-alt="A fragment of a puzzle piece depicting a blue ball of yarn on a wooden floor. The vibrant blue of the yarn contrasts beautifully with the warm wooden background, all styled in a soft, playful aesthetic with clean lines and a friendly feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPTxltLoNa68U2lcVlJStJ9_a-ibggj1k7xzYl1MlsCaACUABJVmJ-R7XpNg1MD2Oz5ZqKKk8_103T-59Vdxwr5LFExtg9DvHla9B8x4ZVoY1VkYAr8WVpT2ZWPRk4qIREImQ15I4VaTNXzJmHjsw1a64_g6RXccsiWFiBxnwyKokwXeNzowmsXoHYookJED0px_mDWllVtOgAXoPA4XOLgOa57ISSYI5oZv7XZqEony90dGJQhNyZA-1tYXjIyuQ8xFNMU-yK8H4" style="object-position: 50% 100%;"/>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-md flex justify-center">
+<button class="w-full bg-primary text-on-primary font-label-bold py-md rounded-lg bubbly-button hover:bg-primary/90 transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">shuffle</span>
+                        SHUFFLE
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Win Celebration Overlay (Hidden by default) -->
+<div class="fixed inset-0 z-[100] hidden items-center justify-center p-md bg-on-surface/40 backdrop-blur-sm overflow-hidden" id="win-modal">
+<!-- Confetti Container -->
+<div class="absolute inset-0 pointer-events-none" id="confetti-holder"></div>
+<!-- Modal Content -->
+<div class="relative bg-surface rounded-xl p-xl max-w-md w-full text-center shadow-2xl border-4 border-secondary-container animate-[bounce_1s_ease-in-out_infinite]">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-secondary-container rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+<span class="material-symbols-outlined text-white text-[60px]" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg-mobile text-secondary mt-md mb-xs">YOU WIN!</h2>
+<p class="font-body-lg text-outline mb-lg">You are a puzzle master, Scout!</p>
+<div class="bg-primary-container/20 rounded-lg p-md mb-xl">
+<span class="block font-label-bold text-primary text-sm uppercase tracking-widest">TOTAL MOVES</span>
+<span class="font-headline-lg text-primary" id="final-move-count">16</span>
+</div>
+<div class="flex flex-col gap-sm">
+<button class="w-full bg-primary text-on-primary font-headline-md py-md rounded-lg bubbly-button hover:bg-primary/90 transition-all border-b-4 border-on-primary-fixed-variant" onclick="hideWinModal()">
+                    PLAY AGAIN
+                </button>
+<button class="w-full bg-surface-container-high text-on-surface-variant font-label-bold py-md rounded-lg hover:bg-surface-container-highest transition-all" onclick="hideWinModal()">
+                    BACK TO HOME
+                </button>
+</div>
+</div>
+</div>
+<!-- Bottom Nav Bar (Shared Component) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-xs py-sm bg-surface-container-lowest shadow-[0_-8px_30px_rgb(0,100,145,0.05)] z-50">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 scale-110">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-bold text-label-bold">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">extension</span>
+<span class="font-label-bold text-label-bold">My Puzzles</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-label-bold text-label-bold">Awards</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">family_restroom</span>
+<span class="font-label-bold text-label-bold">Grown-ups</span>
+</div>
+</nav>
+<script>
+        let moves = 14;
+
+        function addMove() {
+            moves++;
+            document.getElementById('move-count').innerText = moves;
+        }
+
+        function showWinModal() {
+            addMove();
+            addMove(); // Just to show game end
+            const modal = document.getElementById('win-modal');
+            document.getElementById('final-move-count').innerText = moves;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            createConfetti();
+        }
+
+        function hideWinModal() {
+            const modal = document.getElementById('win-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('confetti-holder').innerHTML = '';
+            moves = 0;
+            document.getElementById('move-count').innerText = moves;
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confetti-holder');
+            const colors = ['#7bc9ff', '#fd8c9c', '#c9e6ff', '#ffd9dc', '#ffb2bb'];
+            for(let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.opacity = Math.random();
+                container.appendChild(confetti);
+            }
+        }
+    </script>
+</body></html>

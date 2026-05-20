@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>melzonusya - Playful Photo Puzzles</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#fd8c9c",
+              "surface-container": "#eceef0",
+              "on-surface": "#191c1e",
+              "on-primary-fixed": "#001e2f",
+              "outline": "#707880",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#8aceff",
+              "surface-tint": "#006491",
+              "inverse-primary": "#8aceff",
+              "background": "#f7f9fb",
+              "on-background": "#191c1e",
+              "on-error-container": "#93000a",
+              "on-error": "#ffffff",
+              "surface-container-high": "#e6e8ea",
+              "secondary-fixed-dim": "#ffb2bb",
+              "on-tertiary": "#ffffff",
+              "surface-container-low": "#f2f4f6",
+              "surface-dim": "#d8dadc",
+              "on-primary-fixed-variant": "#004c6e",
+              "tertiary": "#665e49",
+              "on-tertiary-container": "#564e3a",
+              "surface-container-lowest": "#ffffff",
+              "surface-variant": "#e0e3e5",
+              "on-surface-variant": "#40484f",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#e0e3e5",
+              "outline-variant": "#bfc7d0",
+              "primary-fixed": "#c9e6ff",
+              "secondary-fixed": "#ffd9dc",
+              "primary-container": "#7bc9ff",
+              "secondary": "#9c4050",
+              "on-secondary-container": "#772334",
+              "tertiary-container": "#ccc0a7",
+              "surface": "#f7f9fb",
+              "on-secondary-fixed": "#400011",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#2d3133",
+              "tertiary-fixed-dim": "#d1c5ac",
+              "surface-bright": "#f7f9fb",
+              "on-secondary-fixed-variant": "#7e2839",
+              "primary": "#006491",
+              "on-tertiary-fixed": "#211b0b",
+              "on-primary-container": "#00547a",
+              "inverse-on-surface": "#eff1f3",
+              "tertiary-fixed": "#eee1c7",
+              "on-tertiary-fixed-variant": "#4e4633",
+              "on-secondary": "#ffffff"
+            },
+            borderRadius: {
+              "DEFAULT": "1rem",
+              "lg": "2rem",
+              "xl": "3rem",
+              "full": "9999px"
+            },
+            spacing: {
+              "md": "24px",
+              "sm": "12px",
+              "base": "8px",
+              "gutter": "20px",
+              "margin-desktop": "48px",
+              "xs": "4px",
+              "lg": "40px",
+              "margin-mobile": "16px",
+              "xl": "64px"
+            },
+            fontFamily: {
+              "body-lg": ["Quicksand"],
+              "headline-lg": ["Quicksand"],
+              "body-md": ["Quicksand"],
+              "headline-lg-mobile": ["Quicksand"],
+              "headline-md": ["Quicksand"],
+              "label-bold": ["Quicksand"]
+            },
+            fontSize: {
+              "body-lg": ["20px", {"lineHeight": "30px", "fontWeight": "500"}],
+              "headline-lg": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+              "body-md": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+              "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+              "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+              "label-bold": ["16px", {"lineHeight": "20px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: #f7f9fb; 
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .cloud-shadow { 
+            box-shadow: 0 10px 40px -10px rgba(0, 100, 145, 0.08); 
+        }
+        .chunky-button { 
+            position: relative;
+            transition: all 0.1s ease;
+            top: 0;
+        }
+        .chunky-button:active {
+            top: 4px;
+            box-shadow: none !important;
+        }
+        .chunky-primary {
+            box-shadow: 0 4px 0 #004c6e;
+        }
+        .chunky-secondary {
+            box-shadow: 0 4px 0 #7e2839;
+        }
+        .chunky-tertiary {
+            box-shadow: 0 4px 0 #4e4633;
+        }
+        .dashed-border {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='48' ry='48' stroke='%23006491' stroke-width='4' stroke-dasharray='12%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 32px;
+            width: 32px;
+            border-radius: 50%;
+            background: #006491;
+            cursor: pointer;
+            border: 4px solid #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Custom Shake Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        
+        /* Floating pieces in tray */
+        .puzzle-piece {
+            touch-action: none;
+        }
+        
+        /* Confetti pieces */
+        .confetti-piece {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+        
+        .bubbly-button {
+            box-shadow: 0 6px 0 0 rgba(0,0,0,0.1);
+            transition: all 0.1s ease;
+        }
+        .bubbly-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 0 rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+
+    <!-- Top AppBar (Shared) -->
+    <header class="bg-surface shadow-[0_8px_30px_rgb(0,100,145,0.05)] flex justify-between items-center px-margin-mobile py-base w-full z-50 fixed top-0 left-0">
+        <div class="font-headline-md text-headline-md font-bold text-primary cursor-pointer hover:scale-105 transition-transform" onclick="goToHome()">
+            melzonusya
+        </div>
+        <div class="flex items-center gap-sm">
+            <button class="material-symbols-outlined text-outline hover:scale-105 transition-transform duration-200 active:translate-y-[2px]" onclick="showHelpModal()">help</button>
+            <button class="material-symbols-outlined text-outline hover:scale-105 transition-transform duration-200 active:translate-y-[2px]" onclick="showSettingsModal()">settings</button>
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container border-2 border-white shadow-sm">
+                <img id="header-avatar" alt="Scout" class="w-full h-full object-cover" src="scout_puppy.png"/>
+            </div>
+        </div>
+    </header>
+
+    <!-- SETUP SCREEN -->
+    <main id="screen-setup" class="pt-24 px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto flex flex-col gap-lg">
+        <!-- Welcome Section -->
+        <section class="text-center space-y-xs">
+            <h1 class="font-headline-lg text-headline-lg-mobile text-primary">Hey Scout! Let's make a puzzle!</h1>
+            <p class="font-body-md text-on-surface-variant">Pick a cool photo, select how many pieces, and let's play!</p>
+        </section>
+
+        <!-- Drag and Drop / Preview Area -->
+        <section class="relative group">
+            <div class="aspect-[4/3] md:aspect-[16/9] dashed-border bg-surface-container-lowest rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-primary-container/10 overflow-hidden relative" id="drop-zone">
+                <div class="flex flex-col items-center justify-center p-md" id="drop-zone-placeholder">
+                    <div class="p-lg bg-primary-container/20 rounded-full mb-md group-hover:scale-110 transition-transform duration-300">
+                        <span class="material-symbols-outlined text-primary !text-6xl">photo_camera</span>
+                    </div>
+                    <h2 class="font-headline-md text-primary">Click to upload a photo</h2>
+                    <p class="font-body-md text-outline">or drag one right here!</p>
+                </div>
+                <!-- Interactive Preview Image -->
+                <img id="uploaded-image-preview" src="scout_puppy.png" class="hidden w-full h-full object-cover" alt="Selected puzzle image">
+                <input accept="image/*" class="hidden" id="file-input" type="file"/>
+            </div>
+        </section>
+
+        <!-- Quick Favorites / Library -->
+        <section class="space-y-sm text-center">
+            <span class="font-label-bold text-outline uppercase tracking-wider text-sm block">Or choose a favorite picture:</span>
+            <div class="flex justify-center gap-md">
+                <button class="w-20 h-20 rounded-xl overflow-hidden border-4 border-primary shadow-md hover:scale-105 transition-transform" onclick="selectPresetImage('scout_puppy.png', this)">
+                    <img src="scout_puppy.png" class="w-full h-full object-cover" alt="Scout Puppy">
+                </button>
+                <button class="w-20 h-20 rounded-xl overflow-hidden border-4 border-transparent shadow-md hover:scale-105 transition-transform" onclick="selectPresetImage('magic_unicorn.png', this)">
+                    <img src="magic_unicorn.png" class="w-full h-full object-cover" alt="Magic Unicorn">
+                </button>
+                <button class="w-20 h-20 rounded-xl overflow-hidden border-4 border-transparent shadow-md hover:scale-105 transition-transform" onclick="selectPresetImage('https://lh3.googleusercontent.com/aida-public/AB6AXuCRoG3NGK3WklmV9L7szyAbIxfncwFZG7rpKleCtw15mO2TXVJrxg6kSyZNJ_b2GMlbUy9zyj6gwOGbLsD3NRLj38QOh8bRrPNq3dLLmagAaBFbMKG0aZTLviGLeUGBpDDTsKZNedLjMNiq4a5b49gDTSKPBc9MlomxdJKnYB8MXOXtgbwbZXoTDboH76a8USCI1aLKJOl6L1fGxl4kH7_1NDtCqGdLT7AW2UogvH3eDvXp0Ry1hqZ0_O9k8a6iF-4cz-yyfvflG7I', this)">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRoG3NGK3WklmV9L7szyAbIxfncwFZG7rpKleCtw15mO2TXVJrxg6kSyZNJ_b2GMlbUy9zyj6gwOGbLsD3NRLj38QOh8bRrPNq3dLLmagAaBFbMKG0aZTLviGLeUGBpDDTsKZNedLjMNiq4a5b49gDTSKPBc9MlomxdJKnYB8MXOXtgbwbZXoTDboH76a8USCI1aLKJOl6L1fGxl4kH7_1NDtCqGdLT7AW2UogvH3eDvXp0Ry1hqZ0_O9k8a6iF-4cz-yyfvflG7I" class="w-full h-full object-cover" alt="Yarn Kitten">
+                </button>
+            </div>
+        </section>
+
+        <!-- Selection Controls -->
+        <section class="bg-surface-container-low rounded-lg p-lg cloud-shadow space-y-lg">
+            <div class="flex flex-col gap-md">
+                <div class="flex justify-between items-end">
+                    <label class="font-label-bold text-primary flex items-center gap-xs">
+                        <span class="material-symbols-outlined">extension</span>
+                        How many pieces?
+                    </label>
+                    <div class="px-sm py-xs rounded-full bg-[#E8F5E9] text-[#2E7D32] font-label-bold transition-all duration-300" id="difficulty-badge">
+                        Easy Peasy!
+                    </div>
+                </div>
+                <!-- Slider -->
+                <div class="px-sm py-md">
+                    <input class="w-full h-4 bg-primary-container rounded-full appearance-none cursor-pointer" id="piece-slider" max="4" min="0" step="1" type="range" value="0"/>
+                    <div class="flex justify-between mt-sm font-label-bold text-outline">
+                        <span>9</span>
+                        <span>16</span>
+                        <span>25</span>
+                        <span>36</span>
+                        <span>49</span>
+                    </div>
+                </div>
+                <!-- Quick Selection Buttons -->
+                <div class="grid grid-cols-5 gap-sm">
+                    <button class="piece-btn active chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-primary" onclick="updateSelection(0)">9</button>
+                    <button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(1)">16</button>
+                    <button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(2)">25</button>
+                    <button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(3)">36</button>
+                    <button class="piece-btn chunky-button chunky-tertiary bg-surface-container-highest py-base rounded-full font-label-bold text-on-surface border-2 border-transparent" onclick="updateSelection(4)">49</button>
+                </div>
+            </div>
+            <!-- Start Button -->
+            <div class="pt-sm">
+                <button class="w-full chunky-button chunky-primary bg-primary text-on-primary py-md rounded-xl font-headline-md flex items-center justify-center gap-sm" onclick="startGame()">
+                    Let's Play!
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- GAME BOARD SCREEN -->
+    <main id="screen-game" class="hidden pt-24 px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto flex flex-col gap-lg w-full">
+        <!-- Game Stats & Progress -->
+        <div class="w-full flex flex-col gap-sm">
+            <div class="flex justify-between items-end px-xs">
+                <div class="flex flex-col">
+                    <span class="font-label-bold text-label-bold text-outline">MOVES</span>
+                    <span class="font-headline-lg text-headline-lg-mobile text-primary" id="move-count">0</span>
+                </div>
+                <!-- Visual helper preview button -->
+                <button class="flex items-center gap-xs px-sm py-1 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors font-label-bold text-sm" onclick="toggleHintImage()">
+                    <span class="material-symbols-outlined text-md">visibility</span> See Photo Hint
+                </button>
+                <div class="flex flex-col items-end">
+                    <span class="font-label-bold text-label-bold text-outline">PROGRESS</span>
+                    <span class="font-headline-md text-primary" id="progress-percent">0%</span>
+                </div>
+            </div>
+            <!-- Progress Bar -->
+            <div class="w-full h-6 bg-tertiary-container rounded-full overflow-hidden p-[3px]">
+                <div class="h-full bg-secondary-container rounded-full w-[0%] transition-all duration-300 ease-out shadow-inner" id="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <!-- Hint Image Modal Popup (Toggled by "See Photo Hint") -->
+        <div id="hint-modal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-md backdrop-blur-xs" onclick="toggleHintImage()">
+            <div class="bg-white p-sm rounded-xl max-w-lg w-full aspect-square relative" onclick="event.stopPropagation()">
+                <button class="absolute -top-4 -right-4 w-10 h-10 bg-secondary-container text-white rounded-full flex items-center justify-center font-bold text-lg hover:scale-105 transition-transform" onclick="toggleHintImage()">X</button>
+                <img id="hint-image" src="" class="w-full h-full object-contain rounded-lg" alt="Puzzle Target Image Hint">
+            </div>
+        </div>
+
+        <!-- Puzzle Board Layout -->
+        <div class="w-full grid grid-cols-1 md:grid-cols-5 gap-md lg:gap-lg items-start">
+            <!-- Central Grid (The Canvas) -->
+            <div class="md:col-span-3 bg-surface-container rounded-xl shadow-[0_8px_30px_rgb(0,100,145,0.05)] p-md flex items-center justify-center">
+                <div class="grid w-full aspect-square gap-2 p-1" id="puzzle-grid">
+                    <!-- Slots will be injected dynamically via JS -->
+                </div>
+            </div>
+            <!-- Side Tray (Unplaced Pieces) -->
+            <div class="md:col-span-2 bg-surface-container-low rounded-xl p-md flex flex-col gap-md">
+                <span class="font-label-bold text-label-bold text-primary flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                    YOUR PIECES
+                </span>
+                
+                <!-- Dynamic Pieces Tray (scrollable to handle high piece counts beautifully) -->
+                <div class="grid grid-cols-3 md:grid-cols-2 gap-sm max-h-[300px] md:max-h-[480px] overflow-y-auto p-xs" id="pieces-tray">
+                    <!-- Shuffled pieces will be injected dynamically via JS -->
+                </div>
+                
+                <div class="mt-auto pt-md flex gap-sm">
+                    <button class="flex-1 bg-surface-container-high text-on-surface-variant font-label-bold py-md rounded-lg hover:bg-surface-container-highest transition-all flex items-center justify-center gap-sm" onclick="goToHome()">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        BACK
+                    </button>
+                    <button class="flex-2 bg-primary text-on-primary font-label-bold py-md px-lg rounded-lg bubbly-button hover:bg-primary/90 transition-all flex items-center justify-center gap-sm" onclick="shuffleTray()">
+                        <span class="material-symbols-outlined">shuffle</span>
+                        SHUFFLE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Win Celebration Overlay (Hidden by default) -->
+    <div class="fixed inset-0 z-[100] hidden items-center justify-center p-md bg-on-surface/40 backdrop-blur-sm overflow-hidden" id="win-modal">
+        <!-- Confetti Container -->
+        <div class="absolute inset-0 pointer-events-none" id="confetti-holder"></div>
+        <!-- Modal Content -->
+        <div class="relative bg-surface rounded-xl p-xl max-w-md w-full text-center shadow-2xl border-4 border-secondary-container animate-[bounce_1.5s_ease-in-out_infinite]">
+            <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-secondary-container rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                <span class="material-symbols-outlined text-white text-[60px]" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+            </div>
+            <h2 class="font-headline-lg text-headline-lg-mobile text-secondary mt-md mb-xs">YOU WIN!</h2>
+            <p class="font-body-lg text-outline mb-lg">You are a puzzle master, Scout!</p>
+            <div class="bg-primary-container/20 rounded-lg p-md mb-xl">
+                <span class="block font-label-bold text-primary text-sm uppercase tracking-widest">TOTAL MOVES</span>
+                <span class="font-headline-lg text-primary" id="final-move-count">0</span>
+            </div>
+            <div class="flex flex-col gap-sm">
+                <button class="w-full bg-primary text-on-primary font-headline-md py-md rounded-lg bubbly-button hover:bg-primary/90 transition-all border-b-4 border-on-primary-fixed-variant" onclick="restartGame()">
+                    PLAY AGAIN
+                </button>
+                <button class="w-full bg-surface-container-high text-on-surface-variant font-label-bold py-md rounded-lg hover:bg-surface-container-highest transition-all" onclick="goToHome()">
+                    BACK TO HOME
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal Overlay -->
+    <div class="fixed inset-0 z-[100] hidden items-center justify-center p-md bg-on-surface/40 backdrop-blur-sm" id="help-modal" onclick="hideHelpModal()">
+        <div class="bg-white rounded-xl p-lg max-w-md w-full text-center shadow-2xl relative" onclick="event.stopPropagation()">
+            <button class="absolute top-4 right-4 text-outline hover:text-primary transition-colors" onclick="hideHelpModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="w-20 h-20 mx-auto rounded-full overflow-hidden bg-primary-container border-2 border-white shadow-md mb-md">
+                <img src="scout_puppy.png" class="w-full h-full object-cover" alt="Scout Puppy">
+            </div>
+            <h3 class="font-headline-md text-primary mb-xs">How to Play! 🐾</h3>
+            <p class="font-body-md text-on-surface-variant mb-md">
+                Hello Explorer! Ready to build a puzzle? Follow these simple rules:
+            </p>
+            <ul class="text-left space-y-sm text-on-surface-variant font-body-md mb-lg">
+                <li class="flex items-start gap-xs">
+                    <span class="material-symbols-outlined text-primary text-md">check_circle</span>
+                    Select a target photo or upload your own image.
+                </li>
+                <li class="flex items-start gap-xs">
+                    <span class="material-symbols-outlined text-primary text-md">check_circle</span>
+                    Choose the grid size: 9 pieces is easy peasy, 49 is a challenge!
+                </li>
+                <li class="flex items-start gap-xs">
+                    <span class="material-symbols-outlined text-primary text-md">check_circle</span>
+                    Drag the puzzle pieces from the tray and drop them onto their correct spot.
+                </li>
+                <li class="flex items-start gap-xs">
+                    <span class="material-symbols-outlined text-primary text-md">check_circle</span>
+                    Try to finish the puzzle in as few moves as possible. Have fun!
+                </li>
+            </ul>
+            <button class="w-full bg-primary text-on-primary font-headline-md py-md rounded-lg bubbly-button hover:bg-primary/90 transition-all" onclick="hideHelpModal()">
+                Got it!
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Modal Overlay -->
+    <div class="fixed inset-0 z-[100] hidden items-center justify-center p-md bg-on-surface/40 backdrop-blur-sm" id="settings-modal" onclick="hideSettingsModal()">
+        <div class="bg-white rounded-xl p-lg max-w-md w-full shadow-2xl relative" onclick="event.stopPropagation()">
+            <button class="absolute top-4 right-4 text-outline hover:text-primary transition-colors" onclick="hideSettingsModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="font-headline-md text-primary mb-md text-center">Settings ⚙️</h3>
+            
+            <div class="space-y-md mb-lg">
+                <div class="flex justify-between items-center bg-surface-container-low p-sm rounded-lg">
+                    <span class="font-label-bold text-on-surface-variant">Sound Effects</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="setting-sound" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+                
+                <div class="flex justify-between items-center bg-surface-container-low p-sm rounded-lg">
+                    <span class="font-label-bold text-on-surface-variant">Developer Mode</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="setting-dev" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+            </div>
+            
+            <button class="w-full bg-primary text-on-primary font-headline-md py-md rounded-lg bubbly-button hover:bg-primary/90 transition-all" onclick="hideSettingsModal()">
+                Save Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar (Shared) -->
+    <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-xs py-sm bg-surface-container-lowest shadow-[0_-8px_30px_rgb(0,100,145,0.05)] rounded-t-xl z-50">
+        <button id="nav-btn-home" class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 scale-110 transition-all active:scale-95 duration-150" onclick="goToHome()">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+            <span class="font-label-bold text-label-bold">Home</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors" onclick="alert('My Puzzles feature is coming soon!')">
+            <span class="material-symbols-outlined">extension</span>
+            <span class="font-label-bold text-label-bold">My Puzzles</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors" onclick="alert('Awards gallery is coming soon!')">
+            <span class="material-symbols-outlined">emoji_events</span>
+            <span class="font-label-bold text-label-bold">Awards</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-outline px-4 py-2 hover:bg-primary-container/20 transition-colors" onclick="alert('Adult control panel is coming soon!')">
+            <span class="material-symbols-outlined">family_restroom</span>
+            <span class="font-label-bold text-label-bold">Grown-ups</span>
+        </button>
+    </nav>
+
+    <!-- CORE JAVASCRIPT GAME LOGIC -->
+    <script>
+        // Game State Variables
+        let selectedImageUrl = 'scout_puppy.png';
+        let activeDifficultyIndex = 0; // default 9 pieces
+        let moves = 0;
+        let placedPieces = 0;
+        let totalPieces = 9;
+        let presetBorderClasses = ['border-primary', 'border-transparent'];
+        
+        // Difficulty Level Data
+        const difficulties = [
+            { label: 'Easy Peasy!', bg: '#E8F5E9', text: '#2E7D32', pieces: 9, grid: 3 },
+            { label: 'Smarty Pants', bg: '#E3F2FD', text: '#1976D2', pieces: 16, grid: 4 },
+            { label: 'Puzzle Master', bg: '#FFF3E0', text: '#EF6C00', pieces: 25, grid: 5 },
+            { label: 'Big Genius', bg: '#F3E5F5', text: '#7B1FA2', pieces: 36, grid: 6 },
+            { label: 'Super Pro!', bg: '#FFEBEE', text: '#C62828', pieces: 49, grid: 7 }
+        ];
+
+        // HTML elements references
+        const slider = document.getElementById('piece-slider');
+        const badge = document.getElementById('difficulty-badge');
+        const buttons = document.querySelectorAll('.piece-btn');
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const imagePreview = document.getElementById('uploaded-image-preview');
+        const dropZonePlaceholder = document.getElementById('drop-zone-placeholder');
+        
+        // Show selected preset image on startup
+        selectPresetImage('scout_puppy.png', document.querySelector('button[onclick*="scout_puppy.png"]'));
+
+        // Handle selection slider
+        slider.addEventListener('input', (e) => {
+            updateSelection(parseInt(e.target.value));
+        });
+
+        // Update selected difficulty in UI
+        function updateSelection(index) {
+            activeDifficultyIndex = index;
+            const diff = difficulties[index];
+            badge.innerText = diff.label;
+            badge.style.backgroundColor = diff.bg;
+            badge.style.color = diff.text;
+
+            buttons.forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('border-primary');
+                    btn.classList.remove('border-transparent');
+                } else {
+                    btn.classList.add('border-transparent');
+                    btn.classList.remove('border-primary');
+                }
+            });
+            slider.value = index;
+        }
+
+        // Set target image from preset gallery
+        function selectPresetImage(url, element) {
+            selectedImageUrl = url;
+            
+            // Show image in preview zone
+            imagePreview.src = url;
+            imagePreview.classList.remove('hidden');
+            dropZonePlaceholder.classList.add('hidden');
+            dropZone.classList.remove('dashed-border');
+            
+            // Update active thumbnail border
+            const presetButtons = element.parentElement.querySelectorAll('button');
+            presetButtons.forEach(btn => {
+                btn.classList.remove('border-primary');
+                btn.classList.add('border-transparent');
+            });
+            element.classList.add('border-primary');
+            element.classList.remove('border-transparent');
+        }
+
+        // Setup custom Drag & Drop image upload
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('bg-primary-container/20');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('bg-primary-container/20');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-primary-container/20');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleUploadedFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleUploadedFile(e.target.files[0]);
+            }
+        });
+
+        function handleUploadedFile(file) {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const dataUrl = e.target.result;
+                selectedImageUrl = dataUrl;
+                // Update preview UI
+                imagePreview.src = dataUrl;
+                imagePreview.classList.remove('hidden');
+                dropZonePlaceholder.classList.add('hidden');
+                dropZone.classList.remove('dashed-border');
+                // Unhighlight all preset buttons since a custom photo was loaded
+                const presetButtons = document.querySelectorAll('button[onclick*="selectPresetImage"]');
+                presetButtons.forEach(btn => {
+                    btn.classList.remove('border-primary');
+                    btn.classList.add('border-transparent');
+                });
+                // Immediately start the game with the selected difficulty
+                document.getElementById('screen-setup').classList.add('hidden');
+                document.getElementById('screen-game').classList.remove('hidden');
+                document.getElementById('header-avatar').src = selectedImageUrl;
+                initGame(selectedImageUrl, difficulties[activeDifficultyIndex].grid);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Toggle Screens
+        function goToHome() {
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-setup').classList.remove('hidden');
+            
+            // Reset active nav button styling
+            const homeBtn = document.getElementById('nav-btn-home');
+            homeBtn.classList.add('bg-primary-container', 'text-on-primary-container');
+            
+            hideWinModal();
+        }
+
+        // Open Game Board Screen and start generating layout
+        function startGame() {
+            document.getElementById('screen-setup').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            
+            // Set header avatar to our target image for fun connection
+            document.getElementById('header-avatar').src = selectedImageUrl;
+            
+            // Start the gameplay engine
+            initGame(selectedImageUrl, difficulties[activeDifficultyIndex].grid);
+        }
+
+        // Game Initialization Logic
+        function initGame(imageUrl, gridSize) {
+            moves = 0;
+            placedPieces = 0;
+            totalPieces = gridSize * gridSize;
+            
+            document.getElementById('move-count').innerText = moves;
+            document.getElementById('progress-percent').innerText = '0%';
+            document.getElementById('progress-bar-fill').style.width = '0%';
+            
+            // Set up hint image source
+            document.getElementById('hint-image').src = imageUrl;
+            
+            const grid = document.getElementById('puzzle-grid');
+            grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+            grid.innerHTML = '';
+            
+            // 1. Generate empty slots on the board
+            for (let i = 0; i < totalPieces; i++) {
+                const slot = document.createElement('div');
+                slot.className = "relative rounded-lg border-2 border-dashed border-tertiary/30 bg-white/40 puzzle-slot flex items-center justify-center w-full h-full transition-all duration-200";
+                slot.dataset.index = i;
+                slot.innerHTML = `<span class="material-symbols-outlined text-tertiary/20 text-xl pointer-events-none select-none">extension</span>`;
+                
+                // Allow Drag and Drop Events on board slots
+                slot.addEventListener('dragover', (e) => e.preventDefault());
+                
+                slot.addEventListener('dragenter', (e) => {
+                    e.preventDefault();
+                    if (!slot.querySelector('.puzzle-piece')) {
+                        slot.classList.add('bg-primary-container/20', 'border-primary');
+                    }
+                });
+                
+                slot.addEventListener('dragleave', () => {
+                    slot.classList.remove('bg-primary-container/20', 'border-primary');
+                });
+                
+                slot.addEventListener('drop', (e) => {
+                    slot.classList.remove('bg-primary-container/20', 'border-primary');
+                    
+                    const pieceId = e.dataTransfer.getData('text/plain');
+                    const piece = document.getElementById(pieceId);
+                    if (!piece) return;
+                    
+                    const pieceIndex = parseInt(piece.dataset.index);
+                    const slotIndex = parseInt(slot.dataset.index);
+                    
+                    handlePieceDrop(piece, pieceIndex, slot, slotIndex);
+                });
+                
+                grid.appendChild(slot);
+            }
+            
+            // 2. Generate and Shuffle puzzle pieces
+            const pieces = [];
+            for (let i = 0; i < totalPieces; i++) {
+                const row = Math.floor(i / gridSize);
+                const col = i % gridSize;
+                
+                const piece = document.createElement('div');
+                piece.id = `piece-${i}`;
+                piece.dataset.index = i;
+                piece.className = "puzzle-piece w-full h-full rounded-md shadow-sm cursor-grab active:cursor-grabbing border border-primary/10 transition-transform hover:scale-105 aspect-square relative";
+                piece.draggable = true;
+                
+                // CSS background trick to slice image dynamically
+                piece.style.backgroundImage = `url(${imageUrl})`;
+                piece.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
+                
+                // Calculate percentage background positions for each piece
+                const posX = gridSize > 1 ? (col / (gridSize - 1)) * 100 : 0;
+                const posY = gridSize > 1 ? (row / (gridSize - 1)) * 100 : 0;
+                piece.style.backgroundPosition = `${posX}% ${posY}%`;
+                
+                // HTML5 Drag Events
+                piece.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', piece.id);
+                    piece.style.opacity = '0.4';
+                });
+                
+                piece.addEventListener('dragend', () => {
+                    piece.style.opacity = '1';
+                });
+                
+                // Add Touch Gestures support
+                makeTouchDraggable(piece);
+                
+                pieces.push(piece);
+            }
+            
+            // Shuffle
+            pieces.sort(() => Math.random() - 0.5);
+            
+            // Render shuffled pieces in the tray wrapper slots
+            const tray = document.getElementById('pieces-tray');
+            tray.innerHTML = '';
+            pieces.forEach(p => {
+                const wrapper = document.createElement('div');
+                wrapper.className = "aspect-square bg-white rounded-lg p-1 shadow-sm flex items-center justify-center border border-gray-100 hover:shadow-md transition-shadow";
+                wrapper.appendChild(p);
+                tray.appendChild(wrapper);
+            });
+        }
+
+        // Shared logic when piece is dropped in a slot (Mouse or Touch)
+        function handlePieceDrop(piece, pieceIndex, slot, slotIndex) {
+            // Dev Mode bypass option for debugging/testing
+            const devModeActive = document.getElementById('setting-dev').checked;
+            
+            if (pieceIndex === slotIndex || devModeActive) {
+                // Remove existing slot icon
+                slot.innerHTML = '';
+                slot.appendChild(piece);
+                
+                // Snap settings
+                piece.classList.remove('cursor-grab', 'active:cursor-grabbing', 'hover:scale-105');
+                piece.classList.add('cursor-default');
+                piece.draggable = false;
+                
+                // Trigger little snapping sound effect
+                playSnapSound();
+                
+                // Pop snap visual effect
+                piece.classList.add('scale-95');
+                setTimeout(() => piece.classList.remove('scale-95'), 150);
+                
+                placedPieces++;
+                addMove();
+                checkProgress();
+            } else {
+                // Play error effect on target slot
+                slot.classList.add('animate-shake', 'border-error');
+                setTimeout(() => slot.classList.remove('animate-shake', 'border-error'), 450);
+                
+                // Custom dev feedback
+                playErrorSound();
+                addMove();
+            }
+        }
+
+        // Shuffle remaining tray items helper
+        function shuffleTray() {
+            const tray = document.getElementById('pieces-tray');
+            const items = Array.from(tray.children);
+            
+            // Only shuffle slots that still have a piece inside
+            const activeWrappers = items.filter(w => w.children.length > 0);
+            const activePieces = activeWrappers.map(w => w.firstElementChild);
+            
+            // Mix up active pieces
+            activePieces.sort(() => Math.random() - 0.5);
+            
+            // Put them back into wrappers
+            activeWrappers.forEach((wrapper, index) => {
+                wrapper.appendChild(activePieces[index]);
+            });
+            
+            // Dynamic rotate visual feedback for action feedback
+            const shuffleBtn = document.querySelector('button[onclick*="shuffleTray"] span');
+            shuffleBtn.classList.add('animate-spin');
+            setTimeout(() => shuffleBtn.classList.remove('animate-spin'), 500);
+        }
+
+        // Increment hamle (moves)
+        function addMove() {
+            moves++;
+            document.getElementById('move-count').innerText = moves;
+        }
+
+        // Recompute progress percentage bar
+        function checkProgress() {
+            const percent = Math.floor((placedPieces / totalPieces) * 100);
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-bar-fill').style.width = `${percent}%`;
+            
+            if (placedPieces === totalPieces) {
+                setTimeout(showWinModal, 600);
+            }
+        }
+
+        // MOBILE GESTURES DRAG AND DROP HANDLING
+        let activeTouchPiece = null;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let pieceStartX = 0;
+        let pieceStartY = 0;
+        let ghostPiece = null;
+
+        function makeTouchDraggable(piece) {
+            piece.addEventListener('touchstart', (e) => {
+                // Make sure piece is in tray wrapper (not already placed)
+                if (piece.parentElement.parentElement.id !== 'pieces-tray') return;
+                
+                const touch = e.touches[0];
+                activeTouchPiece = piece;
+                
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                
+                const rect = piece.getBoundingClientRect();
+                pieceStartX = rect.left;
+                pieceStartY = rect.top;
+                
+                // Build absolute clone following user finger
+                ghostPiece = piece.cloneNode(true);
+                ghostPiece.style.position = 'fixed';
+                ghostPiece.style.left = `${pieceStartX}px`;
+                ghostPiece.style.top = `${pieceStartY}px`;
+                ghostPiece.style.width = `${rect.width}px`;
+                ghostPiece.style.height = `${rect.height}px`;
+                ghostPiece.style.opacity = '0.85';
+                ghostPiece.style.zIndex = '9999';
+                ghostPiece.style.pointerEvents = 'none'; // pass touch events through
+                document.body.appendChild(ghostPiece);
+                
+                piece.style.opacity = '0.4';
+                
+                // Prevent scrolling page while dragging piece
+                if(e.cancelable) e.preventDefault();
+            }, { passive: false });
+
+            piece.addEventListener('touchmove', (e) => {
+                if (!activeTouchPiece || !ghostPiece) return;
+                const touch = e.touches[0];
+                const dx = touch.clientX - touchStartX;
+                const dy = touch.clientY - touchStartY;
+                
+                ghostPiece.style.left = `${pieceStartX + dx}px`;
+                ghostPiece.style.top = `${pieceStartY + dy}px`;
+                
+                if(e.cancelable) e.preventDefault();
+            }, { passive: false });
+
+            piece.addEventListener('touchend', (e) => {
+                if (!activeTouchPiece || !ghostPiece) return;
+                const touch = e.changedTouches[0];
+                
+                // Temporarily hide clone to check element underneath at coordinates
+                ghostPiece.style.display = 'none';
+                const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+                ghostPiece.style.display = 'block';
+                
+                // Clean up drag overlay
+                ghostPiece.remove();
+                ghostPiece = null;
+                piece.style.opacity = '1';
+                
+                // Inspect targets underneath touch point
+                let slot = null;
+                if (targetElement) {
+                    slot = targetElement.closest('.puzzle-slot');
+                }
+                
+                if (slot) {
+                    const pieceIndex = parseInt(piece.dataset.index);
+                    const slotIndex = parseInt(slot.dataset.index);
+                    
+                    handlePieceDrop(piece, pieceIndex, slot, slotIndex);
+                } else {
+                    addMove();
+                }
+                
+                activeTouchPiece = null;
+            });
+        }
+
+        // Popups Modals Toggles Helper Functions
+        function toggleHintImage() {
+            const modal = document.getElementById('hint-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function showHelpModal() {
+            const modal = document.getElementById('help-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hideHelpModal() {
+            const modal = document.getElementById('help-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hideSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Win Modal Functions
+        function showWinModal() {
+            const modal = document.getElementById('win-modal');
+            document.getElementById('final-move-count').innerText = moves;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            createConfetti();
+        }
+
+        function hideWinModal() {
+            const modal = document.getElementById('win-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('confetti-holder').innerHTML = '';
+        }
+
+        function restartGame() {
+            hideWinModal();
+            initGame(selectedImageUrl, difficulties[activeDifficultyIndex].grid);
+        }
+
+        // Procedural Confetti Generation Engine
+        function createConfetti() {
+            const container = document.getElementById('confetti-holder');
+            const colors = ['#7bc9ff', '#fd8c9c', '#c9e6ff', '#ffd9dc', '#ffb2bb'];
+            for(let i = 0; i < 70; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.opacity = Math.random().toString();
+                container.appendChild(confetti);
+            }
+        }
+        
+        // Simple Audio Synthesizer fallback logic for satisfying UI interactions without loading audio files
+        function playSnapSound() {
+            if (!document.getElementById('setting-sound').checked) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Short sweet pop sound synth
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(450, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(700, ctx.currentTime + 0.1);
+                
+                gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + 0.15);
+            } catch(e) {}
+        }
+        
+        function playErrorSound() {
+            if (!document.getElementById('setting-sound').checked) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Short low buzz tone synth
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, ctx.currentTime);
+                osc.frequency.setValueAtTime(100, ctx.currentTime + 0.08);
+                
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.18);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + 0.2);
+            } catch(e) {}
+        }
+    </script>
+</body>
+</html>
